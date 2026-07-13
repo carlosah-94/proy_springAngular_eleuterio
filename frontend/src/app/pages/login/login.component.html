@@ -1,0 +1,30 @@
+<section class="login-page">
+  <div class="login-card">
+    <div class="login-visual">
+      <div class="brand">
+        <span class="material-symbols-outlined">storefront</span>
+        <h1>Abarrotes Eleuterio</h1>
+      </div>
+      <p>Gestiona tu negocio con claridad y elegancia. Inventario, ventas y proveedores en un solo lugar.</p>
+    </div>
+    <div class="login-form-wrap">
+      <h2>Bienvenido, Don Eleuterio</h2>
+      <p class="subtitle">Ingresa tus credenciales para administrar la tienda.</p>
+      <form (ngSubmit)="submit()" class="login-form">
+        <label>Correo Electrónico</label>
+        <input type="email" [(ngModel)]="email" name="email" required placeholder="eleuterio@abarrotes.com" />
+        <label>Contraseña</label>
+        <div class="password-field">
+          <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" required placeholder="••••••••" />
+          <button type="button" class="icon-btn" (click)="showPassword = !showPassword">
+            <span class="material-symbols-outlined">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
+          </button>
+        </div>
+        <p class="error" *ngIf="error">{{ error }}</p>
+        <button type="submit" class="btn-primary" [disabled]="loading">
+          {{ loading ? 'Accediendo...' : 'Acceder al Panel' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

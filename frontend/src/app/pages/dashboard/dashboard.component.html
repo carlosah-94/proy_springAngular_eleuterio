@@ -1,0 +1,70 @@
+<div class="page-header">
+  <div>
+    <h2>Resumen de Operaciones</h2>
+    <p>Bienvenido de nuevo. Aquí tienes las estadísticas clave de hoy.</p>
+  </div>
+  <button class="btn sm" (click)="refresh()"><span class="material-symbols-outlined">refresh</span> Actualizar</button>
+</div>
+
+<div class="cards">
+  <!-- Ventas del Día -->
+  <article class="card highlight">
+    <div class="card-icon">
+      <span class="material-symbols-outlined">payments</span>
+    </div>
+    <div class="card-body">
+      <p class="card-title">Ventas del Día</p>
+      <h2 class="card-value">S/ {{ ventasHoy | number:'1.2-2' }}</h2>
+      <small class="card-sub">{{ transaccionesHoy }} transacciones</small>
+    </div>
+  </article>
+
+  <!-- Productos Bajo Stock -->
+  <article class="card warn">
+    <div class="card-icon">
+      <span class="material-symbols-outlined">warning</span>
+    </div>
+    <div class="card-body">
+      <p class="card-title">Bajo Stock</p>
+      <h2 class="card-value">{{ stats?.stockCritico || 0 }}</h2>
+      <small class="card-sub">Productos críticos</small>
+    </div>
+  </article>
+
+  <!-- Botón de Venta (Atajo) -->
+  <article class="card action-card">
+    <div class="card-icon">
+      <span class="material-symbols-outlined">shopping_basket</span>
+    </div>
+    <div class="card-body">
+      <p class="card-title">Módulo de Caja</p>
+      <a routerLink="/ventas" class="btn primary sm">Realizar Venta</a>
+    </div>
+  </article>
+
+  <!-- Botón de Agregar Producto (Atajo) -->
+  <article class="card action-card">
+    <div class="card-icon">
+      <span class="material-symbols-outlined">add_circle</span>
+    </div>
+    <div class="card-body">
+      <p class="card-title">Inventarios</p>
+      <a routerLink="/inventario" class="btn secondary sm">Nuevo Producto</a>
+    </div>
+  </article>
+</div>
+
+<div class="stats-grid" *ngIf="stats">
+  <div class="stat-box">
+    <span class="label">Total de Productos</span>
+    <strong class="val">{{ stats.totalProductos }}</strong>
+  </div>
+  <div class="stat-box">
+    <span class="label">Valor Total del Inventario</span>
+    <strong class="val">S/ {{ stats.valorInventario | number:'1.2-2' }}</strong>
+  </div>
+  <div class="stat-box">
+    <span class="label">Categorías Registradas</span>
+    <strong class="val">{{ stats.totalCategorias }}</strong>
+  </div>
+</div>

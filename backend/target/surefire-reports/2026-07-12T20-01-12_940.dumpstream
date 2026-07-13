@@ -1,0 +1,5 @@
+# Created at 2026-07-12T20:01:13.396
+Boot Manifest-JAR contains absolute paths in classpath 'D:\UTP\Ciclo 7\Desarrollo Web Integrado\proy_VF\proy_eleuterio_av03\backend\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+

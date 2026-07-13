@@ -1,0 +1,128 @@
+.report-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--sp-6);
+  margin-bottom: var(--sp-8);
+}
+
+.report-card {
+  background: var(--color-bg-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  transition: all 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-border-2);
+    box-shadow: var(--shadow-md);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    color: var(--color-primary);
+
+    .icon {
+      font-size: 2.2rem;
+      background: var(--color-primary-glow);
+      padding: 8px;
+      border-radius: var(--r-md);
+    }
+
+    h4 {
+      font-family: var(--font-tight);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-text);
+    }
+  }
+
+  .card-mid {
+    .label {
+      font-size: 0.8rem;
+      color: var(--color-text-2);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .value {
+      font-family: var(--font-tight);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      margin: var(--sp-1) 0;
+
+      &.text-warning {
+        color: var(--color-warning);
+      }
+    }
+
+    small {
+      font-size: 0.78rem;
+      color: var(--color-text-3);
+    }
+  }
+
+  .card-footer {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--sp-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .badge {
+      align-self: center;
+      font-size: 0.7rem;
+    }
+  }
+}
+
+.provider-info {
+  display: flex;
+  flex-direction: column;
+
+  .provider-name {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+}
+
+.category-tag {
+  background: var(--color-bg-3);
+  color: var(--color-text-2);
+  padding: 4px 10px;
+  border-radius: var(--r-sm);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.price-cell {
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-success);
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--color-text-3);
+  padding: var(--sp-8) 0;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--sp-4);
+}

@@ -1,0 +1,44 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="material-symbols-outlined">storefront</span>
+      <div>
+        <strong>Abarrotes Eleuterio</strong>
+        <small>{{ auth.getNombre() }}</small>
+      </div>
+    </div>
+    <nav>
+      <a routerLink="/dashboard" routerLinkActive="active">Panel</a>
+      <a routerLink="/inventario" routerLinkActive="active">Inventario</a>
+      <a routerLink="/ventas" routerLinkActive="active">Ventas</a>
+      <a routerLink="/proveedores" routerLinkActive="active">Proveedores</a>
+      <a routerLink="/reportes" routerLinkActive="active">Reportes</a>
+    </nav>
+    <button class="logout-btn" (click)="logout()">
+      <span class="material-symbols-outlined">logout</span> Cerrar sesión
+    </button>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <h1>Sistema de Gestión</h1>
+      <div class="notif-wrap">
+        <button class="notif-btn" (click)="showNotificaciones = !showNotificaciones">
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="badge" *ngIf="alertas.length">{{ alertas.length }}</span>
+        </button>
+        <div class="notif-panel" *ngIf="showNotificaciones">
+          <h3>Notificaciones</h3>
+          <div *ngIf="!alertas.length" class="empty">Sin alertas por ahora</div>
+          <div *ngFor="let a of alertas" class="notif-item" [class.error]="a.tipo === 'error'">
+            <strong>{{ a.titulo }}</strong>
+            <p>{{ a.mensaje }}</p>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="content">
+      <router-outlet />
+    </main>
+  </div>
+</div>

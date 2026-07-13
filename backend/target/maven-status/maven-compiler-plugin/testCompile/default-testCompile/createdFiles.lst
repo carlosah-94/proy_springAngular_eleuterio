@@ -1,0 +1,4 @@
+com\eleuterio\abarrotes\AbarrotesApplicationTests.class
+com\eleuterio\abarrotes\service\TextUtilsTest.class
+com\eleuterio\abarrotes\controller\ProductoControllerTest.class
+com\eleuterio\abarrotes\controller\AuthControllerTest.class

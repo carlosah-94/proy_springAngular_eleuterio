@@ -1,0 +1,52 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: abarrotes-api
+  config:
+    import: optional:file:.env[.properties],optional:file:../.env[.properties]
+  datasource:
+    url: jdbc:postgresql://${SUPABASE_DB_HOST}:${SUPABASE_DB_PORT}/${SUPABASE_DB_NAME}?sslmode=${SUPABASE_DB_SSLMODE}&options=-c%20search_path=public&prepareThreshold=0&socketTimeout=30
+    username: ${SUPABASE_DB_USER}
+    password: ${SUPABASE_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 5
+      minimum-idle: 1
+      idle-timeout: 300000
+      max-lifetime: 600000
+      keepalive-time: 30000
+      connection-test-query: SELECT 1
+      validation-timeout: 5000
+      pool-name: HikariPool-Supabase
+      initialization-fail-timeout: -1
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        default_schema: public
+        jdbc:
+          time_zone: America/Lima
+    show-sql: false
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:clave-secreta-larga-y-segura-para-jwt-minimo-32-caracteres-eleuterio}
+    expiration-ms: 28800000
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:4200}
+  seed:
+    email: eleuterio@abarrotes.com
+    password: Eleuterio2024!
+    nombre: Don Eleuterio
+
+logging:
+  level:
+    com.eleuterio.abarrotes: INFO
+    com.zaxxer.hikari: WARN

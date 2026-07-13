@@ -1,0 +1,168 @@
+<div class="page-header">
+  <div>
+    <h2>Inventario de Productos</h2>
+    <p>Administra los productos de tu tienda, controla el stock y las fechas de vencimiento.</p>
+  </div>
+  <button class="btn" (click)="abrirCrear()">
+    <span class="material-symbols-outlined">add</span> Añadir nuevo producto
+  </button>
+</div>
+
+<!-- Tarjetas Resumen -->
+<div class="stats-panel" *ngIf="stats">
+  <div class="stat-card">
+    <span class="material-symbols-outlined icon">inventory</span>
+    <div>
+      <span class="label">Total Productos</span>
+      <strong>{{ stats.totalProductos }}</strong>
+    </div>
+  </div>
+  <div class="stat-card">
+    <span class="material-symbols-outlined icon">payments</span>
+    <div>
+      <span class="label">Valor Inventario</span>
+      <strong>S/ {{ stats.valorInventario | number:'1.2-2' }}</strong>
+    </div>
+  </div>
+  <div class="stat-card critical">
+    <span class="material-symbols-outlined icon">warning</span>
+    <div>
+      <span class="label">Stock Crítico</span>
+      <strong>{{ stats.stockCritico }}</strong>
+    </div>
+  </div>
+  <div class="stat-card">
+    <span class="material-symbols-outlined icon">category</span>
+    <div>
+      <span class="label">Categorías</span>
+      <strong>{{ stats.totalCategorias }}</strong>
+    </div>
+  </div>
+</div>
+
+<!-- Filtro de Búsqueda -->
+<div class="search-bar-wrap">
+  <div class="search-input">
+    <span class="material-symbols-outlined search-icon">search</span>
+    <input type="text" class="input" [(ngModel)]="busqueda" (keyup.enter)="buscar()" placeholder="Buscar producto por nombre o categoría..." />
+  </div>
+  <button class="btn secondary" (click)="buscar()">Buscar</button>
+</div>
+
+<!-- Tabla del Inventario -->
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Categoría</th>
+        <th>Stock</th>
+        <th>Vencimiento</th>
+        <th>Precio</th>
+        <th style="text-align: right;">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of productos">
+        <td>
+          <div class="product-info">
+            <span class="product-name">{{ p.nombre }}</span>
+            <span class="product-desc" *ngIf="p.presentacion || p.tipo">
+              {{ p.presentacion }}<span *ngIf="p.presentacion && p.tipo"> · </span>{{ p.tipo }}
+            </span>
+          </div>
+        </td>
+        <td>
+          <span class="category-badge">{{ p.categoriaNombre }}</span>
+        </td>
+        <td>
+          <span class="badge" [class.danger]="p.estadoStock === 'AGOTADO'" [class.warning]="p.estadoStock === 'CRITICO'" [class.ok]="p.estadoStock === 'OK'">
+            {{ p.stockActual }} uds
+          </span>
+        </td>
+        <td>
+          <span class="venc-date" [class.danger-text]="p.fechaVencimiento && p.estadoStock === 'CRITICO'">
+            {{ p.fechaVencimiento || '—' }}
+          </span>
+        </td>
+        <td class="price-cell">S/ {{ p.precio | number:'1.2-2' }}</td>
+        <td>
+          <div class="actions-cell">
+            <button class="btn icon-only sm" title="Editar" (click)="abrirEditar(p)">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+            <button class="btn icon-only sm danger" title="Eliminar" (click)="eliminar(p)">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="!productos.length">
+        <td colspan="6" class="empty-state">No se encontraron productos registrados</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="pagination-container" *ngIf="paginas().length > 1">
+  <div class="pagination">
+    <button *ngFor="let p of paginas()" [class.active]="p === pagina" (click)="irPagina(p)">{{ p }}</button>
+  </div>
+</div>
+
+<!-- Modal Modal Crear/Editar -->
+<div class="modal-backdrop" *ngIf="showModal" (click)="showModal = false"></div>
+<div class="modal" *ngIf="showModal">
+  <h3>{{ editMode ? 'Editar Producto' : 'Añadir Nuevo Producto' }}</h3>
+  <form (ngSubmit)="guardar()" class="modal-form">
+    <div class="input-group">
+      <label>Nombre del Producto *</label>
+      <input class="input" [(ngModel)]="form.nombre" name="nombre" required placeholder="Ej. Inca Kola 1.5L" />
+    </div>
+
+    <div class="row-2">
+      <div class="input-group">
+        <label>Tamaño / Presentación</label>
+        <input class="input" [(ngModel)]="form.presentacion" name="presentacion" placeholder="Ej. 1.5 Litros" />
+      </div>
+      <div class="input-group">
+        <label>Tipo</label>
+        <input class="input" [(ngModel)]="form.tipo" name="tipo" placeholder="Ej. Retornable de vidrio" />
+      </div>
+    </div>
+
+    <div class="row-2">
+      <div class="input-group">
+        <label>Categoría *</label>
+        <input class="input" [(ngModel)]="form.categoria" name="categoria" list="cats" required placeholder="Escribe o selecciona..." />
+        <datalist id="cats">
+          <option *ngFor="let c of categorias" [value]="c.nombre"></option>
+        </datalist>
+      </div>
+      <div class="input-group">
+        <label>Precio *</label>
+        <input class="input" type="number" step="0.01" min="0.01" [(ngModel)]="form.precio" name="precio" required placeholder="0.00" />
+      </div>
+    </div>
+
+    <div class="row-2" *ngIf="!editMode">
+      <div class="input-group">
+        <label>Stock Inicial</label>
+        <input class="input" type="number" min="0" [(ngModel)]="form.stockInicial" name="stockInicial" />
+      </div>
+      <div class="input-group">
+        <label>Fecha de Vencimiento</label>
+        <input class="input" type="date" [(ngModel)]="form.fechaVencimiento" name="fechaVencimiento" />
+      </div>
+    </div>
+
+    <p class="error" *ngIf="error">
+      <span class="material-symbols-outlined">error</span> {{ error }}
+    </p>
+
+    <div class="modal-actions">
+      <button type="button" class="btn ghost" (click)="showModal = false">Cancelar</button>
+      <button type="submit" class="btn">Guardar Producto</button>
+    </div>
+  </form>
+</div>

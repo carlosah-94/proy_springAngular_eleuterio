@@ -1,0 +1,93 @@
+<div class="page-header">
+  <div>
+    <h2>Reponer Stock de Productos</h2>
+    <p>Registra la mercadería recibida por proveedores para actualizar el inventario.</p>
+  </div>
+</div>
+
+<section class="proveedores">
+  <div class="form-card">
+    <h3>Detalles del Abastecimiento</h3>
+    
+    <div class="row-2">
+      <div class="input-group">
+        <label>Nombre del Proveedor *</label>
+        <input class="input" [(ngModel)]="nombreProveedor" placeholder="Ej. Backus, Alicorp..." />
+      </div>
+      <div class="input-group">
+        <label>Fecha de Recepción *</label>
+        <input class="input" type="date" [(ngModel)]="fechaRecepcion" />
+      </div>
+    </div>
+
+    <div class="divider-line"></div>
+
+    <h4>Detalle de Productos Recibidos</h4>
+    <div class="item-form-grid">
+      <div class="input-group col-span-2">
+        <label>Producto *</label>
+        <input class="input" [(ngModel)]="formItem.nombreProducto" list="productos-list" placeholder="Buscar producto existente en el inventario..." />
+        <datalist id="productos-list">
+          <option *ngFor="let p of productos" [value]="p.nombre"></option>
+        </datalist>
+      </div>
+      <div class="input-group">
+        <label>Cantidad *</label>
+        <input class="input" type="number" min="1" [(ngModel)]="formItem.cantidadRecibida" placeholder="1" />
+      </div>
+      <div class="input-group">
+        <label>Vencimiento Lote</label>
+        <input class="input" type="date" [(ngModel)]="formItem.fechaVencimientoLote" />
+      </div>
+      <div class="input-group">
+        <label>Costo Total (S/) *</label>
+        <input class="input" type="number" step="0.01" min="0.01" [(ngModel)]="formItem.costoTotal" placeholder="0.00" />
+      </div>
+      <div class="action-btn-wrap">
+        <button type="button" class="btn secondary" (click)="agregarItem()">
+          <span class="material-symbols-outlined">add</span> Agregar
+        </button>
+      </div>
+    </div>
+
+    <!-- Lista de Items Agregados -->
+    <div class="added-items-container" *ngIf="items.length">
+      <h5>Productos listos para ingresar:</h5>
+      <div class="items-list">
+        <div *ngFor="let item of items; let i = index" class="item-row">
+          <div class="row-info">
+            <span class="product-title">{{ item.nombreProducto }}</span>
+            <span class="meta-info">
+              {{ item.cantidadRecibida }} unidades
+              <span *ngIf="item.fechaVencimientoLote"> · Vence: {{ item.fechaVencimientoLote }}</span>
+            </span>
+          </div>
+          <div class="row-cost">
+            <span class="cost-val">S/ {{ item.costoTotal | number:'1.2-2' }}</span>
+            <button class="btn icon-only sm danger" title="Quitar item" (click)="quitarItem(i)">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <div class="total-cost-box">
+        <span>Costo Total del Orden:</span>
+        <strong>S/ {{ costoTotalOrden | number:'1.2-2' }}</strong>
+      </div>
+      
+      <p class="error" *ngIf="error">
+        <span class="material-symbols-outlined">error</span> {{ error }}
+      </p>
+      <p class="ok" *ngIf="mensaje">
+        <span class="material-symbols-outlined">check_circle</span> {{ mensaje }}
+      </p>
+
+      <button class="btn primary lg-btn" (click)="registrar()" [disabled]="!items.length">
+        <span class="material-symbols-outlined">inventory</span> Registrar e Ingresar al Inventario
+      </button>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,92 @@
+<div class="page-header">
+  <div>
+    <h2>Reportes del Negocio</h2>
+    <p>Consulte y descargue los reportes de ventas y gastos semanales, y controle a sus proveedores.</p>
+  </div>
+</div>
+
+<div class="report-cards">
+  <!-- Total de Ventas -->
+  <article class="report-card">
+    <div class="card-top">
+      <span class="material-symbols-outlined icon">trending_up</span>
+      <h4>Total de Ventas Semanales</h4>
+    </div>
+    <div class="card-mid">
+      <span class="label">Ventas acumuladas</span>
+      <h2 class="value">S/ {{ totalVentas | number:'1.2-2' }}</h2>
+      <small>{{ transacciones }} transacciones realizadas</small>
+    </div>
+    <div class="card-footer">
+      <button class="btn primary" (click)="descargarVentasPdf()">
+        <span class="material-symbols-outlined">download</span> Descargar PDF de Ventas
+      </button>
+      <span class="badge warning">Autodescarga: Domingo 12 AM</span>
+    </div>
+  </article>
+
+  <!-- Gastos de Proveedores -->
+  <article class="report-card">
+    <div class="card-top">
+      <span class="material-symbols-outlined icon">local_shipping</span>
+      <h4>Gastos de Proveedores</h4>
+    </div>
+    <div class="card-mid">
+      <span class="label">Gastos acumulados</span>
+      <h2 class="value text-warning">S/ {{ totalGastos | number:'1.2-2' }}</h2>
+      <small>{{ ordenes }} órdenes registradas</small>
+    </div>
+    <div class="card-footer">
+      <button class="btn secondary" (click)="descargarGastosPdf()">
+        <span class="material-symbols-outlined">download</span> Descargar PDF de Gastos
+      </button>
+      <span class="badge warning">Autodescarga: Domingo 12 AM</span>
+    </div>
+  </article>
+</div>
+
+<!-- Tabla de Proveedores y Gastos Mensuales -->
+<div class="page-header" style="margin-top: var(--sp-8); margin-bottom: var(--sp-4);">
+  <div>
+    <h3>Gasto Mensual por Proveedor</h3>
+    <p>Lista de proveedores con los que se interactuó en el mes actual. Se reinicia a 0 el 1ero de cada mes.</p>
+  </div>
+</div>
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Proveedor</th>
+        <th>Categoría</th>
+        <th>Órdenes de Compra</th>
+        <th style="text-align: right;">Gasto Mensual</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of proveedoresPagina">
+        <td>
+          <div class="provider-info">
+            <span class="provider-name">{{ p.proveedor }}</span>
+          </div>
+        </td>
+        <td>
+          <span class="category-tag">{{ p.categoria }}</span>
+        </td>
+        <td>
+          {{ p.totalOrdenes }} órdenes
+        </td>
+        <td class="price-cell">S/ {{ p.gastoMensual | number:'1.2-2' }}</td>
+      </tr>
+      <tr *ngIf="!proveedores.length">
+        <td colspan="4" class="empty-state">No se registraron gastos con proveedores este mes</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="pagination-container" *ngIf="paginas().length > 1">
+  <div class="pagination">
+    <button *ngFor="let p of paginas()" [class.active]="p === pagina" (click)="irPagina(p)">{{ p }}</button>
+  </div>
+</div>

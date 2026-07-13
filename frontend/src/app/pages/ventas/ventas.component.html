@@ -1,0 +1,87 @@
+<section class="ventas-page">
+  <div class="ventas-grid">
+    
+    <!-- Catálogo de productos -->
+    <div class="catalogo">
+      <div class="search-bar">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input type="text" [(ngModel)]="busqueda" (input)="buscar()" placeholder="Buscar producto frecuente o por categoría..." />
+      </div>
+
+      <div class="product-grid">
+        <article *ngFor="let p of productosVisibles" class="product-card" [class.no-stock]="p.stockActual === 0">
+          <div class="card-image-wrap">
+            <img [src]="p.imagenUrl || defaultImg" [alt]="p.nombre" (error)="$any($event.target).src = defaultImg" />
+            <span class="tag-type" *ngIf="p.tipo">{{ p.tipo }}</span>
+          </div>
+          <div class="card-body">
+            <h4 class="product-title" [title]="p.nombre">{{ p.nombre }}</h4>
+            <div class="card-meta">
+              <span class="price">S/ {{ p.precio | number:'1.2-2' }}</span>
+              <span class="stock" [class.low]="p.stockActual <= p.stockMinimo">Stock: {{ p.stockActual }}</span>
+            </div>
+            <button class="btn sm primary w-full" (click)="agregar(p)" [disabled]="p.stockActual === 0">
+              <span class="material-symbols-outlined">add_shopping_cart</span> Agregar
+            </button>
+          </div>
+        </article>
+      </div>
+      <div *ngIf="!productosVisibles.length" class="empty-catalogo">
+        No se encontraron productos para la búsqueda "{{ busqueda }}"
+      </div>
+    </div>
+
+    <!-- Carrito de compras / Venta actual -->
+    <aside class="cart-sidebar">
+      <div class="cart-header">
+        <span class="material-symbols-outlined">shopping_cart</span>
+        <h3>Venta Actual</h3>
+      </div>
+
+      <div class="cart-items-wrap">
+        <div *ngIf="!cart.length" class="cart-empty">
+          <span class="material-symbols-outlined">shopping_cart_checkout</span>
+          <p>El carrito está vacío</p>
+          <small>Agrega productos desde el catálogo de la izquierda</small>
+        </div>
+
+        <div *ngFor="let item of cart" class="cart-item">
+          <div class="item-info">
+            <span class="item-name">{{ item.nombre }}</span>
+            <span class="item-price">S/ {{ item.precio | number:'1.2-2' }} c/u</span>
+          </div>
+          <div class="item-actions">
+            <div class="qty-control">
+              <button class="qty-btn" (click)="cambiarCantidad(item, item.cantidad - 1)">-</button>
+              <span class="qty-num">{{ item.cantidad }}</span>
+              <button class="qty-btn" (click)="cambiarCantidad(item, item.cantidad + 1)" [disabled]="item.cantidad >= item.stockMax">+</button>
+            </div>
+            <span class="item-subtotal">S/ {{ (item.precio * item.cantidad) | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-footer">
+        <div class="total-row">
+          <span>Total a pagar:</span>
+          <strong class="total-val">S/ {{ total | number:'1.2-2' }}</strong>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn primary w-full" (click)="finalizarVenta()" [disabled]="!cart.length">
+            <span class="material-symbols-outlined">check_circle</span> Finalizar venta
+          </button>
+          <button class="btn secondary w-full" (click)="descargarComprobante()" [disabled]="!ultimaVenta">
+            <span class="material-symbols-outlined">print</span> Descargar comprobante
+          </button>
+        </div>
+
+        <div class="feedback-msg" *ngIf="mensaje" [class.error-msg]="mensaje.includes('Error') || mensaje.includes('insuficiente') || mensaje.includes('Primero')">
+          <span class="material-symbols-outlined">info</span>
+          <p>{{ mensaje }}</p>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</section>
