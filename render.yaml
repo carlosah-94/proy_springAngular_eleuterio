@@ -4,7 +4,7 @@ services:
     runtime: java
     plan: free
     region: oregon
-    buildCommand: cd backend && chmod +x ./mvnw && ./mvnw clean package -DskipTests
+    buildCommand: cd backend && chmod +x mvnw && ./mvnw clean package -DskipTests
     startCommand: cd backend && java -jar target/abarrotes-api-1.0.0.jar
     envVars:
       - key: SUPABASE_DB_HOST
@@ -16,11 +16,11 @@ services:
       - key: SUPABASE_DB_USER
         value: postgres.pmzrcydmtkfbfkoicwnh
       - key: SUPABASE_DB_PASSWORD
-        sync: false   # Se asignará en el panel de Render
+        value: xOmsFiervvVbNJmq
       - key: SUPABASE_DB_SSLMODE
         value: require
       - key: JWT_SECRET
-        sync: false   # Se asignará en el panel
+        value: bWcfYJ6hMClImzs9HgU7xPyre4ZaBSDA
       - key: CORS_ORIGINS
         value: https://frontend-eleuterio.onrender.com,http://localhost:4200
 
@@ -29,7 +29,4 @@ services:
     plan: free
     region: oregon
     buildCommand: cd frontend && npm install && npm run build -- --prod
-    publishDir: frontend/dist/frontend   # Cambia si tu outputPath es diferente
-    envVars:
-      - key: NODE_ENV
-        value: production
+    publishPath: frontend/dist/frontend
