@@ -3,3 +3,9 @@ node_modules/
 .env.local
 .env.*.local
 *.log
+
+# Java (backend)
+*.jar
+*.war
+*.ear
+target/
