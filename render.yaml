@@ -24,9 +24,8 @@ services:
       - key: CORS_ORIGINS
         value: https://frontend-eleuterio.onrender.com,http://localhost:4200
 
-  - type: web
+  - type: static
     name: frontend-eleuterio
-    runtime: static
     plan: free
     region: oregon
     buildCommand: cd frontend && npm install && npm run build -- --prod
