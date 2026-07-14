@@ -1,7 +1,7 @@
-# Usa una imagen base con Java 21
-FROM openjdk:21-jdk-slim
+# Usa la imagen oficial de Eclipse Temurin (OpenJDK)
+FROM eclipse-temurin:21-jdk-alpine
 
-# Establece el directorio de trabajo dentro del contenedor
+# Establece el directorio de trabajo
 WORKDIR /app
 
 # Copia el archivo Maven wrapper y el pom.xml
@@ -18,7 +18,7 @@ COPY src src
 # Construye la aplicación
 RUN ./mvnw clean package -DskipTests
 
-# Expone el puerto que usa Spring Boot
+# Expone el puerto
 EXPOSE 8080
 
 # Comando para ejecutar la aplicación
