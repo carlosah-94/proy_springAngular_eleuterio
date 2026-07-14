@@ -14,9 +14,9 @@ services:
       - key: SUPABASE_DB_NAME
         value: postgres
       - key: SUPABASE_DB_USER
-        value: postgres.pmzrcydmtkfbfkoicwnh
+        value: postgres.pmzrcydmtkfbkfokcwrh
       - key: SUPABASE_DB_PASSWORD
-        value: xOmsFiervvVbNJmq
+        value: x0msFiervvVbNJMq
       - key: SUPABASE_DB_SSLMODE
         value: require
       - key: JWT_SECRET
